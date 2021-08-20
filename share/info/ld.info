@@ -5253,9 +5253,10 @@ File: ld.info,  Node: Expressions,  Next: Implicit Linker Scripts,  Prev: VERSIO
 ==================================
 
 The syntax for expressions in the linker script language is identical to
-that of C expressions.  All expressions are evaluated as integers.  All
-expressions are evaluated in the same size, which is 32 bits if both the
-host and target are 32 bits, and is otherwise 64 bits.
+that of C expressions, except that whitespace is required in some places
+to resolve syntactic ambiguities.  All expressions are evaluated as
+integers.  All expressions are evaluated in the same size, which is 32
+bits if both the host and target are 32 bits, and is otherwise 64 bits.
 
    You can use and set symbol values in expressions.
 
@@ -5842,7 +5843,6 @@ use in linker script expressions.
           ... }
 
 'SIZEOF_HEADERS'
-'sizeof_headers'
      Return the size in bytes of the output file's headers.  This is
      information which appears at the start of the output file.  You can
      use this number when setting the start address of the first
@@ -8887,7 +8887,7 @@ LD Index
 * grouping input files:                  File Commands.      (line   53)
 * groups of archives:                    Options.            (line 1102)
 * H8/300 support:                        H8/300.             (line    6)
-* header size:                           Builtin Functions.  (line  191)
+* header size:                           Builtin Functions.  (line  190)
 * heap size:                             Options.            (line 2346)
 * help:                                  Options.            (line 1469)
 * HIDDEN:                                HIDDEN.             (line    6)
@@ -9008,7 +9008,7 @@ LD Index
                                                              (line  104)
 * NOLOAD:                                Output Section Type.
                                                              (line   23)
-* not enough room for program headers:   Builtin Functions.  (line  196)
+* not enough room for program headers:   Builtin Functions.  (line  195)
 * NO_ENUM_SIZE_WARNING:                  ARM.                (line  155)
 * NO_WCHAR_SIZE_WARNING:                 ARM.                (line  162)
 * o =:                                   MEMORY.             (line   67)
@@ -9092,7 +9092,7 @@ LD Index
 * program headers:                       PHDRS.              (line    6)
 * program headers and sections:          Output Section Phdr.
                                                              (line    6)
-* program headers, not enough room:      Builtin Functions.  (line  196)
+* program headers, not enough room:      Builtin Functions.  (line  195)
 * program segments:                      PHDRS.              (line    6)
 * PROVIDE:                               PROVIDE.            (line    6)
 * PROVIDE_HIDDEN:                        PROVIDE_HIDDEN.     (line    6)
@@ -9175,7 +9175,7 @@ LD Index
 * SHORT(EXPRESSION):                     Output Section Data.
                                                              (line    6)
 * SIZEOF(SECTION):                       Builtin Functions.  (line  175)
-* SIZEOF_HEADERS:                        Builtin Functions.  (line  191)
+* SIZEOF_HEADERS:                        Builtin Functions.  (line  190)
 * small common symbols:                  Input Section Common.
                                                              (line   20)
 * SORT:                                  Input Section Wildcards.
@@ -9318,46 +9318,46 @@ Node: MEMORY212674
 Node: PHDRS217280
 Node: VERSION222606
 Node: Expressions230697
-Node: Constants231626
-Node: Symbolic Constants232500
-Node: Symbols233051
-Node: Orphan Sections233798
-Node: Location Counter235383
-Node: Operators239817
-Node: Evaluation240739
-Node: Expression Section242103
-Node: Builtin Functions246073
-Node: Implicit Linker Scripts254424
-Node: Plugins255199
-Node: libdep Plugin255659
-Node: Machine Dependent257456
-Node: H8/300258544
-Node: M68HC11/68HC12260617
-Node: ARM262064
-Node: HPPA ELF32274174
-Node: M68K275797
-Node: MIPS276706
-Node: MMIX277822
-Node: MSP430278987
-Node: NDS32280900
-Node: Nios II281864
-Node: PowerPC ELF32283180
-Node: PowerPC64 ELF64286011
-Node: S/390 ELF295769
-Node: SPU ELF296116
-Node: TI COFF298744
-Node: WIN32299270
-Node: Xtensa319417
-Node: BFD322860
-Node: BFD outline324318
-Node: BFD information loss325606
-Node: Canonical format328132
-Node: Reporting Bugs332460
-Node: Bug Criteria333154
-Node: Bug Reporting333853
-Node: MRI340892
-Node: GNU Free Documentation License345363
-Node: LD Index370500
+Node: Constants231710
+Node: Symbolic Constants232584
+Node: Symbols233135
+Node: Orphan Sections233882
+Node: Location Counter235467
+Node: Operators239901
+Node: Evaluation240823
+Node: Expression Section242187
+Node: Builtin Functions246157
+Node: Implicit Linker Scripts254491
+Node: Plugins255266
+Node: libdep Plugin255726
+Node: Machine Dependent257523
+Node: H8/300258611
+Node: M68HC11/68HC12260684
+Node: ARM262131
+Node: HPPA ELF32274241
+Node: M68K275864
+Node: MIPS276773
+Node: MMIX277889
+Node: MSP430279054
+Node: NDS32280967
+Node: Nios II281931
+Node: PowerPC ELF32283247
+Node: PowerPC64 ELF64286078
+Node: S/390 ELF295836
+Node: SPU ELF296183
+Node: TI COFF298811
+Node: WIN32299337
+Node: Xtensa319484
+Node: BFD322927
+Node: BFD outline324385
+Node: BFD information loss325673
+Node: Canonical format328199
+Node: Reporting Bugs332527
+Node: Bug Criteria333221
+Node: Bug Reporting333920
+Node: MRI340959
+Node: GNU Free Documentation License345430
+Node: LD Index370567
 
 End Tag Table
 
