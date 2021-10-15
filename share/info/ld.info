@@ -3180,7 +3180,9 @@ stopping when one of them succeeds:
      targets this is 'start', but PE- and BeOS-based systems for example
      check a list of possible entry symbols, matching the first one
      found.
-   * the address of the first byte of the '.text' section, if present;
+   * the address of the first byte of the code section, if present and
+     an executable is being created - the code section is usually
+     '.text', but can be something else;
    * The address '0'.
 
 
@@ -9281,83 +9283,83 @@ Node: Script Format139584
 Node: Simple Example140447
 Node: Simple Commands143541
 Node: Entry Point144046
-Node: File Commands144975
-Node: Format Commands149284
-Node: REGION_ALIAS151240
-Node: Miscellaneous Commands156067
-Node: Assignments161898
-Node: Simple Assignments162409
-Node: HIDDEN164140
-Node: PROVIDE164767
-Node: PROVIDE_HIDDEN166293
-Node: Source Code Reference166537
-Node: SECTIONS170454
-Node: Output Section Description172342
-Node: Output Section Name173583
-Node: Output Section Address174460
-Node: Input Section176693
-Node: Input Section Basics177494
-Node: Input Section Wildcards182512
-Node: Input Section Common187807
-Node: Input Section Keep189289
-Node: Input Section Example189779
-Node: Output Section Data191190
-Node: Output Section Keywords193969
-Node: Output Section Discarding197536
-Node: Output Section Attributes199426
-Node: Output Section Type200545
-Node: Output Section LMA201674
-Node: Forced Output Alignment204745
-Node: Forced Input Alignment205174
-Node: Output Section Constraint205562
-Node: Output Section Region205990
-Node: Output Section Phdr206423
-Node: Output Section Fill207087
-Node: Overlay Description208229
-Node: MEMORY212674
-Node: PHDRS217280
-Node: VERSION222606
-Node: Expressions230697
-Node: Constants231710
-Node: Symbolic Constants232584
-Node: Symbols233135
-Node: Orphan Sections233882
-Node: Location Counter235467
-Node: Operators239901
-Node: Evaluation240823
-Node: Expression Section242187
-Node: Builtin Functions246157
-Node: Implicit Linker Scripts254491
-Node: Plugins255266
-Node: libdep Plugin255726
-Node: Machine Dependent257523
-Node: H8/300258611
-Node: M68HC11/68HC12260684
-Node: ARM262131
-Node: HPPA ELF32274241
-Node: M68K275864
-Node: MIPS276773
-Node: MMIX277889
-Node: MSP430279054
-Node: NDS32280967
-Node: Nios II281931
-Node: PowerPC ELF32283247
-Node: PowerPC64 ELF64286078
-Node: S/390 ELF295836
-Node: SPU ELF296183
-Node: TI COFF298811
-Node: WIN32299337
-Node: Xtensa319484
-Node: BFD322927
-Node: BFD outline324385
-Node: BFD information loss325673
-Node: Canonical format328199
-Node: Reporting Bugs332527
-Node: Bug Criteria333221
-Node: Bug Reporting333920
-Node: MRI340959
-Node: GNU Free Documentation License345430
-Node: LD Index370567
+Node: File Commands145082
+Node: Format Commands149391
+Node: REGION_ALIAS151347
+Node: Miscellaneous Commands156174
+Node: Assignments162005
+Node: Simple Assignments162516
+Node: HIDDEN164247
+Node: PROVIDE164874
+Node: PROVIDE_HIDDEN166400
+Node: Source Code Reference166644
+Node: SECTIONS170561
+Node: Output Section Description172449
+Node: Output Section Name173690
+Node: Output Section Address174567
+Node: Input Section176800
+Node: Input Section Basics177601
+Node: Input Section Wildcards182619
+Node: Input Section Common187914
+Node: Input Section Keep189396
+Node: Input Section Example189886
+Node: Output Section Data191297
+Node: Output Section Keywords194076
+Node: Output Section Discarding197643
+Node: Output Section Attributes199533
+Node: Output Section Type200652
+Node: Output Section LMA201781
+Node: Forced Output Alignment204852
+Node: Forced Input Alignment205281
+Node: Output Section Constraint205669
+Node: Output Section Region206097
+Node: Output Section Phdr206530
+Node: Output Section Fill207194
+Node: Overlay Description208336
+Node: MEMORY212781
+Node: PHDRS217387
+Node: VERSION222713
+Node: Expressions230804
+Node: Constants231817
+Node: Symbolic Constants232691
+Node: Symbols233242
+Node: Orphan Sections233989
+Node: Location Counter235574
+Node: Operators240008
+Node: Evaluation240930
+Node: Expression Section242294
+Node: Builtin Functions246264
+Node: Implicit Linker Scripts254598
+Node: Plugins255373
+Node: libdep Plugin255833
+Node: Machine Dependent257630
+Node: H8/300258718
+Node: M68HC11/68HC12260791
+Node: ARM262238
+Node: HPPA ELF32274348
+Node: M68K275971
+Node: MIPS276880
+Node: MMIX277996
+Node: MSP430279161
+Node: NDS32281074
+Node: Nios II282038
+Node: PowerPC ELF32283354
+Node: PowerPC64 ELF64286185
+Node: S/390 ELF295943
+Node: SPU ELF296290
+Node: TI COFF298918
+Node: WIN32299444
+Node: Xtensa319591
+Node: BFD323034
+Node: BFD outline324492
+Node: BFD information loss325780
+Node: Canonical format328306
+Node: Reporting Bugs332634
+Node: Bug Criteria333328
+Node: Bug Reporting334027
+Node: MRI341066
+Node: GNU Free Documentation License345537
+Node: LD Index370674
 
 End Tag Table
 
