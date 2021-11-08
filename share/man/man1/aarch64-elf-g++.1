@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "GCC 1"
-.TH GCC 1 "2021-10-15" "gcc-12.0.0" "GNU"
+.TH GCC 1 "2021-11-08" "gcc-12.0.0" "GNU"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -337,7 +337,8 @@ in the following sections.
 \&\fB\-fdiagnostics\-show\-path\-depths 
 \&\-fno\-show\-column 
 \&\-fdiagnostics\-column\-unit=\fR[\fBdisplay\fR|\fBbyte\fR] 
-\&\fB\-fdiagnostics\-column\-origin=\fR\fIorigin\fR
+\&\fB\-fdiagnostics\-column\-origin=\fR\fIorigin\fR 
+\&\fB\-fdiagnostics\-escape\-format=\fR[\fBunicode\fR|\fBbytes\fR]
 .IP "\fIWarning Options\fR" 4
 .IX Item "Warning Options"
 \&\fB\-fsyntax\-only  \-fmax\-errors=\fR\fIn\fR  \fB\-Wpedantic 
@@ -615,7 +616,8 @@ in the following sections.
 \&\fB\-fasan\-shadow\-offset=\fR\fInumber\fR  \fB\-fsanitize\-sections=\fR\fIs1\fR\fB,\fR\fIs2\fR\fB,... 
 \&\-fsanitize\-undefined\-trap\-on\-error  \-fbounds\-check 
 \&\-fcf\-protection=\fR[\fBfull\fR|\fBbranch\fR|\fBreturn\fR|\fBnone\fR|\fBcheck\fR] 
-\&\fB\-fstack\-protector  \-fstack\-protector\-all  \-fstack\-protector\-strong 
+\&\fB\-fharden\-compares \-fharden\-conditional\-branches 
+\&\-fstack\-protector  \-fstack\-protector\-all  \-fstack\-protector\-strong 
 \&\-fstack\-protector\-explicit  \-fstack\-check 
 \&\-fstack\-limit\-register=\fR\fIreg\fR  \fB\-fstack\-limit\-symbol=\fR\fIsym\fR 
 \&\fB\-fno\-stack\-limit  \-fsplit\-stack 
@@ -2547,14 +2549,14 @@ supported for C as this construct is allowed by \*(C+.
 Do not recognize \f(CW\*(C`asm\*(C'\fR, \f(CW\*(C`inline\*(C'\fR or \f(CW\*(C`typeof\*(C'\fR as a
 keyword, so that code can use these words as identifiers.  You can use
 the keywords \f(CW\*(C`_\|_asm_\|_\*(C'\fR, \f(CW\*(C`_\|_inline_\|_\*(C'\fR and \f(CW\*(C`_\|_typeof_\|_\*(C'\fR
-instead.  \fB\-ansi\fR implies \fB\-fno\-asm\fR.
+instead.  In C, \fB\-ansi\fR implies \fB\-fno\-asm\fR.
 .Sp
-In \*(C+, this switch only affects the \f(CW\*(C`typeof\*(C'\fR keyword, since
-\&\f(CW\*(C`asm\*(C'\fR and \f(CW\*(C`inline\*(C'\fR are standard keywords.  You may want to
-use the \fB\-fno\-gnu\-keywords\fR flag instead, which has the same
-effect.  In C99 mode (\fB\-std=c99\fR or \fB\-std=gnu99\fR), this
-switch only affects the \f(CW\*(C`asm\*(C'\fR and \f(CW\*(C`typeof\*(C'\fR keywords, since
-\&\f(CW\*(C`inline\*(C'\fR is a standard keyword in \s-1ISO C99.\s0
+In \*(C+, \f(CW\*(C`inline\*(C'\fR is a standard keyword and is not affected by
+this switch.  You may want to use the \fB\-fno\-gnu\-keywords\fR flag
+instead, which disables \f(CW\*(C`typeof\*(C'\fR but not \f(CW\*(C`asm\*(C'\fR and
+\&\f(CW\*(C`inline\*(C'\fR.  In C99 mode (\fB\-std=c99\fR or \fB\-std=gnu99\fR),
+this switch only affects the \f(CW\*(C`asm\*(C'\fR and \f(CW\*(C`typeof\*(C'\fR keywords,
+since \f(CW\*(C`inline\*(C'\fR is a standard keyword in \s-1ISO C99.\s0
 .IP "\fB\-fno\-builtin\fR" 4
 .IX Item "-fno-builtin"
 .PD 0
@@ -4895,6 +4897,37 @@ Select the origin for column numbers, i.e. the column number assigned to the
 first column.  The default value of 1 corresponds to traditional \s-1GCC\s0
 behavior and to the \s-1GNU\s0 style guide.  Some utilities may perform better with an
 origin of 0; any non-negative value may be specified.
+.IP "\fB\-fdiagnostics\-escape\-format=\fR\fI\s-1FORMAT\s0\fR" 4
+.IX Item "-fdiagnostics-escape-format=FORMAT"
+When \s-1GCC\s0 prints pertinent source lines for a diagnostic it normally attempts
+to print the source bytes directly.  However, some diagnostics relate to encoding
+issues in the source file, such as malformed \s-1UTF\-8,\s0 or issues with Unicode
+normalization.  These diagnostics are flagged so that \s-1GCC\s0 will escape bytes
+that are not printable \s-1ASCII\s0 when printing their pertinent source lines.
+.Sp
+This option controls how such bytes should be escaped.
+.Sp
+The default \fI\s-1FORMAT\s0\fR, \fBunicode\fR displays Unicode characters that
+are not printable \s-1ASCII\s0 in the form \fB<U+XXXX>\fR, and bytes that do not
+correspond to a Unicode character validly-encoded in UTF\-8\-encoded will be
+displayed as hexadecimal in the form \fB<\s-1XX\s0>\fR.
+.Sp
+For example, a source line containing the string \fBbefore\fR followed by the
+Unicode character U+03C0 (\*(L"\s-1GREEK SMALL LETTER PI\*(R",\s0 with \s-1UTF\-8\s0 encoding
+0xCF 0x80) followed by the byte 0xBF (a stray \s-1UTF\-8\s0 trailing byte), followed by
+the string \fBafter\fR will be printed for such a diagnostic as:
+.Sp
+.Vb 1
+\&         before<U+03C0><BF>after
+.Ve
+.Sp
+Setting \fI\s-1FORMAT\s0\fR to \fBbytes\fR will display all non-printable-ASCII bytes
+in the form \fB<\s-1XX\s0>\fR, thus showing the underlying encoding of non-ASCII
+Unicode characters.  For the example above, the following will be printed:
+.Sp
+.Vb 1
+\&         before<CF><80><BF>after
+.Ve
 .IP "\fB\-fdiagnostics\-format=\fR\fI\s-1FORMAT\s0\fR" 4
 .IX Item "-fdiagnostics-format=FORMAT"
 Select a different format for printing diagnostics.
@@ -4961,9 +4994,11 @@ might be printed in \s-1JSON\s0 form (after formatting) like this:
 \&                                }
 \&                            }
 \&                        ],
+\&                        "escape\-source": false,
 \&                        "message": "...this statement, but the latter is ..."
 \&                    }
 \&                ]
+\&                "escape\-source": false,
 \&                "column\-origin": 1,
 \&            }
 \&        ]
@@ -5045,6 +5080,7 @@ of the expression, which have labels.  It might be printed in \s-1JSON\s0 form a
 \&                        "label": "T {aka struct t}"
 \&                    }
 \&                ],
+\&                "escape\-source": false,
 \&                "message": "invalid operands to binary + ..."
 \&            }
 .Ve
@@ -5097,6 +5133,7 @@ might be printed in \s-1JSON\s0 form as:
 \&                        }
 \&                    }
 \&                ],
+\&                "escape\-source": false,
 \&                "message": "\eu2018struct s\eu2019 has no member named ..."
 \&            }
 .Ve
@@ -5152,6 +5189,10 @@ For example, the intraprocedural example shown for
 \&                }
 \&            ]
 .Ve
+.Sp
+Diagnostics have a boolean attribute \f(CW\*(C`escape\-source\*(C'\fR, hinting whether
+non-ASCII bytes should be escaped when printing the pertinent lines of
+source code (\f(CW\*(C`true\*(C'\fR for diagnostics involving source encoding issues).
 .RE
 .SS "Options to Request or Suppress Warnings"
 .IX Subsection "Options to Request or Suppress Warnings"
@@ -13280,6 +13321,11 @@ Maximum depth of recursive cloning for self-recursive function.
 .IX Item "ipa-cp-min-recursive-probability"
 Recursive cloning only when the probability of call being executed exceeds
 the parameter.
+.IP "\fBipa-cp-profile-count-base\fR" 4
+.IX Item "ipa-cp-profile-count-base"
+When using \fB\-fprofile\-use\fR option, IPA-CP will consider the measured
+execution count of a call graph edge at this percentage position in their
+histogram as the basis for its heuristics calculation.
 .IP "\fBipa-cp-recursive-freq-factor\fR" 4
 .IX Item "ipa-cp-recursive-freq-factor"
 The number of times interprocedural copy propagation expects recursive
@@ -13502,6 +13548,9 @@ Emit instrumentation calls to _\|\fB_tsan_func_entry()\fR and _\|\fB_tsan_func_e
 .IX Item "max-fsm-thread-path-insns"
 Maximum number of instructions to copy when duplicating blocks on a
 finite state automaton jump thread path.
+.IP "\fBmax-fsm-thread-length\fR" 4
+.IX Item "max-fsm-thread-length"
+Maximum number of basic blocks on a jump thread path.
 .IP "\fBparloops-chunk-size\fR" 4
 .IX Item "parloops-chunk-size"
 Chunk size of omp schedule for loops parallelized by parloops.
@@ -13535,6 +13584,15 @@ Maximum number of basic blocks before \s-1EVRP\s0 uses a sparse cache.
 .IP "\fBevrp-mode\fR" 4
 .IX Item "evrp-mode"
 Specifies the mode Early \s-1VRP\s0 should operate in.
+.IP "\fBvrp1\-mode\fR" 4
+.IX Item "vrp1-mode"
+Specifies the mode \s-1VRP\s0 pass 1 should operate in.
+.IP "\fBvrp2\-mode\fR" 4
+.IX Item "vrp2-mode"
+Specifies the mode \s-1VRP\s0 pass 2 should operate in.
+.IP "\fBranger-debug\fR" 4
+.IX Item "ranger-debug"
+Specifies the type of debug output to be issued for ranges.
 .IP "\fBevrp-switch-limit\fR" 4
 .IX Item "evrp-switch-limit"
 Specifies the maximum number of switch cases before \s-1EVRP\s0 ignores a switch.
@@ -14482,7 +14540,24 @@ You can also use the \f(CW\*(C`nocf_check\*(C'\fR attribute to identify
 which functions and calls should be skipped from instrumentation.
 .Sp
 Currently the x86 GNU/Linux target provides an implementation based
-on Intel Control-flow Enforcement Technology (\s-1CET\s0).
+on Intel Control-flow Enforcement Technology (\s-1CET\s0) which works for
+i686 processor or newer.
+.IP "\fB\-fharden\-compares\fR" 4
+.IX Item "-fharden-compares"
+For every logical test that survives gimple optimizations and is
+\&\fInot\fR the condition in a conditional branch (for example,
+conditions tested for conditional moves, or to store in boolean
+variables), emit extra code to compute and verify the reversed
+condition, and to call \f(CW\*(C`_\|_builtin_trap\*(C'\fR if the results do not
+match.  Use with \fB\-fharden\-conditional\-branches\fR to cover all
+conditionals.
+.IP "\fB\-fharden\-conditional\-branches\fR" 4
+.IX Item "-fharden-conditional-branches"
+For every non-vectorized conditional branch that survives gimple
+optimizations, emit extra code to compute and verify the reversed
+condition, and to call \f(CW\*(C`_\|_builtin_trap\*(C'\fR if the result is
+unexpected.  Use with \fB\-fharden\-compares\fR to cover all
+conditionals.
 .IP "\fB\-fstack\-protector\fR" 4
 .IX Item "-fstack-protector"
 Emit extra code to check for buffer overflows, such as stack smashing
@@ -17933,7 +18008,7 @@ performance of the code.  Permissible values for this option are:
 \&\fBcortex\-a73.cortex\-a35\fR, \fBcortex\-a73.cortex\-a53\fR,
 \&\fBcortex\-a75.cortex\-a55\fR, \fBcortex\-a76.cortex\-a55\fR,
 \&\fBcortex\-r82\fR, \fBcortex\-x1\fR, \fBcortex\-x2\fR,
-\&\fBcortex\-a510\fR, \fBcortex\-a710\fR, \fBnative\fR.
+\&\fBcortex\-a510\fR, \fBcortex\-a710\fR, \fBampere1\fR, \fBnative\fR.
 .Sp
 The values \fBcortex\-a57.cortex\-a53\fR, \fBcortex\-a72.cortex\-a53\fR,
 \&\fBcortex\-a73.cortex\-a35\fR, \fBcortex\-a73.cortex\-a53\fR,
