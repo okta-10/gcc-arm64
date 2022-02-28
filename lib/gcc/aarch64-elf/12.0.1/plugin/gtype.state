@@ -4,7 +4,7 @@
 ;;; Don't parse this file wihout knowing GCC gengtype internals.
 ;;; This file should be parsed by the same gengtype which wrote it.
 
-(!version  "12.0.1 20220222 (experimental)")
+(!version  "12.0.1 20220228 (experimental)")
 (!srcdir  "../../gcc/gcc")
 (!languages 10 ada c cp d fortran go jit lto objc objcp)
 (!fileslist 226 0
@@ -24728,7 +24728,7 @@
   nil 0 nil nil )
  
  (!type struct 1566 nil  gc_used "tm_clone_hasher"
-  (!srcfileloc  "varasm.cc" 6365)
+  (!srcfileloc  "varasm.cc" 6368)
   (!fields 0 )
   nil 1023 nil nil )
  
@@ -24737,11 +24737,11 @@
    (!type already_seen 1567)
   )
   gc_pointed_to "hash_table<tm_clone_hasher>"
-  (!srcfileloc  "varasm.cc" 6365)
+  (!srcfileloc  "varasm.cc" 6368)
   (!fields 1 
    (!pair  "tm_clone_hasher"
     (!type already_seen 1566)
-    (!srcfileloc  "varasm.cc" 6365)
+    (!srcfileloc  "varasm.cc" 6368)
     nil )
   )
  )
@@ -32231,11 +32231,11 @@
   nil )
  (!pair  "tm_clone_hasher"
   (!type already_seen 1566)
-  (!srcfileloc  "varasm.cc" 6365)
+  (!srcfileloc  "varasm.cc" 6368)
   nil )
  (!pair  "hash_table<tm_clone_hasher>"
   (!type already_seen 1567)
-  (!srcfileloc  "varasm.cc" 6365)
+  (!srcfileloc  "varasm.cc" 6368)
   nil )
  (!pair  "const_rtx_desc_hasher"
   (!type already_seen 1001)
@@ -35308,7 +35308,7 @@
   (!type array 2349 nil  gc_used "2" 
    (!type already_seen 23)
   )
-  (!srcfileloc  "fortran/trans-stmt.cc" 3242)
+  (!srcfileloc  "fortran/trans-stmt.cc" 3251)
   nil )
  (!pair  "dt_parm"
   (!type already_seen 23)
@@ -36611,7 +36611,7 @@
   nil )
  (!pair  "critical_name_mutexes"
   (!type already_seen 393)
-  (!srcfileloc  "omp-low.cc" 10307)
+  (!srcfileloc  "omp-low.cc" 10292)
   nil )
  (!pair  "omp_declare_variant_alt"
   (!type already_seen 1648)
@@ -36706,22 +36706,22 @@
   nil )
  (!pair  "elf_fini_array_section"
   (!type already_seen 213)
-  (!srcfileloc  "varasm.cc" 8377)
+  (!srcfileloc  "varasm.cc" 8380)
   nil )
  (!pair  "elf_init_array_section"
   (!type already_seen 213)
-  (!srcfileloc  "varasm.cc" 8376)
+  (!srcfileloc  "varasm.cc" 8379)
   nil )
  (!pair  "tm_clone_hash"
   (!type already_seen 1568)
-  (!srcfileloc  "varasm.cc" 6365)
+  (!srcfileloc  "varasm.cc" 6368)
   (!options 
    (!option cache string  "")
   )
  )
  (!pair  "weakref_targets"
   (!type already_seen 23)
-  (!srcfileloc  "varasm.cc" 6020)
+  (!srcfileloc  "varasm.cc" 6023)
   nil )
  (!pair  "const_desc_htab"
   (!type already_seen 1561)
@@ -37013,7 +37013,7 @@
     (!type already_seen 99)
    )
   )
-  (!srcfileloc  "emit-rtl.cc" 6455)
+  (!srcfileloc  "emit-rtl.cc" 6471)
   (!options 
    (!option deletable string  "")
   )
@@ -37417,7 +37417,7 @@
   nil )
  (!pair  "saved_do_cfi_asm"
   (!type already_seen 2)
-  (!srcfileloc  "dwarf2cfi.cc" 3691)
+  (!srcfileloc  "dwarf2cfi.cc" 3694)
   nil )
  (!pair  "dwarf2out_cfi_label_num"
   (!type already_seen 2)
