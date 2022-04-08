@@ -31,9 +31,7 @@
 		       rtx_mode_t (operands[3], SImode)) >= 0)
 #define HAVE_aarch64_movkdi (aarch64_movk_shift (rtx_mode_t (operands[2], DImode), \
 		       rtx_mode_t (operands[3], DImode)) >= 0)
-#define HAVE_aarch64_cpymemdi (TARGET_MOPS)
 #define HAVE_aarch64_movmemdi (TARGET_MOPS)
-#define HAVE_aarch64_setmemdi (TARGET_MOPS)
 #define HAVE_load_pair_sw_sisi (rtx_equal_p (XEXP (operands[3], 0), \
 		 plus_constant (Pmode, \
 				XEXP (operands[1], 0), \
@@ -2404,12 +2402,23 @@
 #define HAVE_aarch64_faddpv2sf (TARGET_SIMD)
 #define HAVE_aarch64_faddpv4sf (TARGET_SIMD)
 #define HAVE_aarch64_faddpv2df (TARGET_SIMD)
-#define HAVE_aarch64_reduc_plus_internalv8qi (TARGET_SIMD)
-#define HAVE_aarch64_reduc_plus_internalv16qi (TARGET_SIMD)
-#define HAVE_aarch64_reduc_plus_internalv4hi (TARGET_SIMD)
-#define HAVE_aarch64_reduc_plus_internalv8hi (TARGET_SIMD)
-#define HAVE_aarch64_reduc_plus_internalv4si (TARGET_SIMD)
-#define HAVE_aarch64_reduc_plus_internalv2di (TARGET_SIMD)
+#define HAVE_reduc_plus_scal_v8qi (TARGET_SIMD)
+#define HAVE_reduc_plus_scal_v16qi (TARGET_SIMD)
+#define HAVE_reduc_plus_scal_v4hi (TARGET_SIMD)
+#define HAVE_reduc_plus_scal_v8hi (TARGET_SIMD)
+#define HAVE_reduc_plus_scal_v4si (TARGET_SIMD)
+#define HAVE_reduc_plus_scal_v2di (TARGET_SIMD)
+#define HAVE_reduc_plus_scal_v2si (TARGET_SIMD)
+#define HAVE_aarch64_zero_extendsi_reduc_plus_v8qi (TARGET_SIMD)
+#define HAVE_aarch64_zero_extenddi_reduc_plus_v8qi (TARGET_SIMD)
+#define HAVE_aarch64_zero_extendsi_reduc_plus_v16qi (TARGET_SIMD)
+#define HAVE_aarch64_zero_extenddi_reduc_plus_v16qi (TARGET_SIMD)
+#define HAVE_aarch64_zero_extendsi_reduc_plus_v4hi (TARGET_SIMD)
+#define HAVE_aarch64_zero_extenddi_reduc_plus_v4hi (TARGET_SIMD)
+#define HAVE_aarch64_zero_extendsi_reduc_plus_v8hi (TARGET_SIMD)
+#define HAVE_aarch64_zero_extenddi_reduc_plus_v8hi (TARGET_SIMD)
+#define HAVE_reduc_plus_scal_v2sf (TARGET_SIMD)
+#define HAVE_reduc_plus_scal_v2df (TARGET_SIMD)
 #define HAVE_aarch64_saddlvv8qi (TARGET_SIMD)
 #define HAVE_aarch64_uaddlvv8qi (TARGET_SIMD)
 #define HAVE_aarch64_saddlvv16qi (TARGET_SIMD)
@@ -2434,17 +2443,6 @@
 #define HAVE_aarch64_uaddlpv4si (TARGET_SIMD)
 #define HAVE_aarch64_saddlpv2si (TARGET_SIMD)
 #define HAVE_aarch64_uaddlpv2si (TARGET_SIMD)
-#define HAVE_aarch64_zero_extendsi_reduc_plus_v8qi (TARGET_SIMD)
-#define HAVE_aarch64_zero_extenddi_reduc_plus_v8qi (TARGET_SIMD)
-#define HAVE_aarch64_zero_extendsi_reduc_plus_v16qi (TARGET_SIMD)
-#define HAVE_aarch64_zero_extenddi_reduc_plus_v16qi (TARGET_SIMD)
-#define HAVE_aarch64_zero_extendsi_reduc_plus_v4hi (TARGET_SIMD)
-#define HAVE_aarch64_zero_extenddi_reduc_plus_v4hi (TARGET_SIMD)
-#define HAVE_aarch64_zero_extendsi_reduc_plus_v8hi (TARGET_SIMD)
-#define HAVE_aarch64_zero_extenddi_reduc_plus_v8hi (TARGET_SIMD)
-#define HAVE_aarch64_reduc_plus_internalv2si (TARGET_SIMD)
-#define HAVE_reduc_plus_scal_v2sf (TARGET_SIMD)
-#define HAVE_reduc_plus_scal_v2df (TARGET_SIMD)
 #define HAVE_clrsbv8qi2 (TARGET_SIMD)
 #define HAVE_clrsbv16qi2 (TARGET_SIMD)
 #define HAVE_clrsbv4hi2 (TARGET_SIMD)
@@ -6920,8 +6918,10 @@
 #define HAVE_movsf 1
 #define HAVE_movdf 1
 #define HAVE_movtf 1
+#define HAVE_aarch64_cpymemdi (TARGET_MOPS)
 #define HAVE_cpymemdi (!STRICT_ALIGNMENT || TARGET_MOPS)
 #define HAVE_movmemdi (TARGET_MOPS)
+#define HAVE_aarch64_setmemdi (TARGET_MOPS)
 #define HAVE_setmemdi (TARGET_SIMD || TARGET_MOPS)
 #define HAVE_extendsidi2 1
 #define HAVE_zero_extendsidi2 1
@@ -7436,13 +7436,6 @@
 #define HAVE_aarch64_float_truncate_hi_v8hf (TARGET_SIMD)
 #define HAVE_vec_pack_trunc_v2df (TARGET_SIMD)
 #define HAVE_vec_pack_trunc_df (TARGET_SIMD)
-#define HAVE_reduc_plus_scal_v8qi (TARGET_SIMD)
-#define HAVE_reduc_plus_scal_v16qi (TARGET_SIMD)
-#define HAVE_reduc_plus_scal_v4hi (TARGET_SIMD)
-#define HAVE_reduc_plus_scal_v8hi (TARGET_SIMD)
-#define HAVE_reduc_plus_scal_v2si (TARGET_SIMD)
-#define HAVE_reduc_plus_scal_v4si (TARGET_SIMD)
-#define HAVE_reduc_plus_scal_v2di (TARGET_SIMD)
 #define HAVE_reduc_plus_scal_v4sf (TARGET_SIMD)
 #define HAVE_reduc_smax_nan_scal_v4hf ((TARGET_SIMD) && (TARGET_SIMD_F16INST))
 #define HAVE_reduc_smin_nan_scal_v4hf ((TARGET_SIMD) && (TARGET_SIMD_F16INST))
@@ -10084,9 +10077,7 @@ extern rtx        gen_insv_immsi                                     (rtx, rtx, 
 extern rtx        gen_insv_immdi                                     (rtx, rtx, rtx);
 extern rtx        gen_aarch64_movksi                                 (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_movkdi                                 (rtx, rtx, rtx, rtx);
-extern rtx        gen_aarch64_cpymemdi                               (rtx, rtx, rtx);
 extern rtx        gen_aarch64_movmemdi                               (rtx, rtx, rtx);
-extern rtx        gen_aarch64_setmemdi                               (rtx, rtx, rtx);
 extern rtx        gen_load_pair_sw_sisi                              (rtx, rtx, rtx, rtx);
 extern rtx        gen_load_pair_sw_sfsi                              (rtx, rtx, rtx, rtx);
 extern rtx        gen_load_pair_sw_sisf                              (rtx, rtx, rtx, rtx);
@@ -11619,12 +11610,23 @@ extern rtx        gen_aarch64_faddpv8hf                              (rtx, rtx, 
 extern rtx        gen_aarch64_faddpv2sf                              (rtx, rtx, rtx);
 extern rtx        gen_aarch64_faddpv4sf                              (rtx, rtx, rtx);
 extern rtx        gen_aarch64_faddpv2df                              (rtx, rtx, rtx);
-extern rtx        gen_aarch64_reduc_plus_internalv8qi                (rtx, rtx);
-extern rtx        gen_aarch64_reduc_plus_internalv16qi               (rtx, rtx);
-extern rtx        gen_aarch64_reduc_plus_internalv4hi                (rtx, rtx);
-extern rtx        gen_aarch64_reduc_plus_internalv8hi                (rtx, rtx);
-extern rtx        gen_aarch64_reduc_plus_internalv4si                (rtx, rtx);
-extern rtx        gen_aarch64_reduc_plus_internalv2di                (rtx, rtx);
+extern rtx        gen_reduc_plus_scal_v8qi                           (rtx, rtx);
+extern rtx        gen_reduc_plus_scal_v16qi                          (rtx, rtx);
+extern rtx        gen_reduc_plus_scal_v4hi                           (rtx, rtx);
+extern rtx        gen_reduc_plus_scal_v8hi                           (rtx, rtx);
+extern rtx        gen_reduc_plus_scal_v4si                           (rtx, rtx);
+extern rtx        gen_reduc_plus_scal_v2di                           (rtx, rtx);
+extern rtx        gen_reduc_plus_scal_v2si                           (rtx, rtx);
+extern rtx        gen_aarch64_zero_extendsi_reduc_plus_v8qi          (rtx, rtx);
+extern rtx        gen_aarch64_zero_extenddi_reduc_plus_v8qi          (rtx, rtx);
+extern rtx        gen_aarch64_zero_extendsi_reduc_plus_v16qi         (rtx, rtx);
+extern rtx        gen_aarch64_zero_extenddi_reduc_plus_v16qi         (rtx, rtx);
+extern rtx        gen_aarch64_zero_extendsi_reduc_plus_v4hi          (rtx, rtx);
+extern rtx        gen_aarch64_zero_extenddi_reduc_plus_v4hi          (rtx, rtx);
+extern rtx        gen_aarch64_zero_extendsi_reduc_plus_v8hi          (rtx, rtx);
+extern rtx        gen_aarch64_zero_extenddi_reduc_plus_v8hi          (rtx, rtx);
+extern rtx        gen_reduc_plus_scal_v2sf                           (rtx, rtx);
+extern rtx        gen_reduc_plus_scal_v2df                           (rtx, rtx);
 extern rtx        gen_aarch64_saddlvv8qi                             (rtx, rtx);
 extern rtx        gen_aarch64_uaddlvv8qi                             (rtx, rtx);
 extern rtx        gen_aarch64_saddlvv16qi                            (rtx, rtx);
@@ -11649,17 +11651,6 @@ extern rtx        gen_aarch64_saddlpv4si                             (rtx, rtx);
 extern rtx        gen_aarch64_uaddlpv4si                             (rtx, rtx);
 extern rtx        gen_aarch64_saddlpv2si                             (rtx, rtx);
 extern rtx        gen_aarch64_uaddlpv2si                             (rtx, rtx);
-extern rtx        gen_aarch64_zero_extendsi_reduc_plus_v8qi          (rtx, rtx);
-extern rtx        gen_aarch64_zero_extenddi_reduc_plus_v8qi          (rtx, rtx);
-extern rtx        gen_aarch64_zero_extendsi_reduc_plus_v16qi         (rtx, rtx);
-extern rtx        gen_aarch64_zero_extenddi_reduc_plus_v16qi         (rtx, rtx);
-extern rtx        gen_aarch64_zero_extendsi_reduc_plus_v4hi          (rtx, rtx);
-extern rtx        gen_aarch64_zero_extenddi_reduc_plus_v4hi          (rtx, rtx);
-extern rtx        gen_aarch64_zero_extendsi_reduc_plus_v8hi          (rtx, rtx);
-extern rtx        gen_aarch64_zero_extenddi_reduc_plus_v8hi          (rtx, rtx);
-extern rtx        gen_aarch64_reduc_plus_internalv2si                (rtx, rtx);
-extern rtx        gen_reduc_plus_scal_v2sf                           (rtx, rtx);
-extern rtx        gen_reduc_plus_scal_v2df                           (rtx, rtx);
 extern rtx        gen_clrsbv8qi2                                     (rtx, rtx);
 extern rtx        gen_clrsbv16qi2                                    (rtx, rtx);
 extern rtx        gen_clrsbv4hi2                                     (rtx, rtx);
@@ -18060,8 +18051,10 @@ extern rtx        gen_movbf                                          (rtx, rtx);
 extern rtx        gen_movsf                                          (rtx, rtx);
 extern rtx        gen_movdf                                          (rtx, rtx);
 extern rtx        gen_movtf                                          (rtx, rtx);
+extern rtx        gen_aarch64_cpymemdi                               (rtx, rtx, rtx);
 extern rtx        gen_cpymemdi                                       (rtx, rtx, rtx, rtx);
 extern rtx        gen_movmemdi                                       (rtx, rtx, rtx, rtx);
+extern rtx        gen_aarch64_setmemdi                               (rtx, rtx, rtx);
 extern rtx        gen_setmemdi                                       (rtx, rtx, rtx, rtx);
 extern rtx        gen_extendsidi2                                    (rtx, rtx);
 extern rtx        gen_zero_extendsidi2                               (rtx, rtx);
@@ -18568,13 +18561,6 @@ extern rtx        gen_aarch64_float_truncate_hi_v4sf                 (rtx, rtx, 
 extern rtx        gen_aarch64_float_truncate_hi_v8hf                 (rtx, rtx, rtx);
 extern rtx        gen_vec_pack_trunc_v2df                            (rtx, rtx, rtx);
 extern rtx        gen_vec_pack_trunc_df                              (rtx, rtx, rtx);
-extern rtx        gen_reduc_plus_scal_v8qi                           (rtx, rtx);
-extern rtx        gen_reduc_plus_scal_v16qi                          (rtx, rtx);
-extern rtx        gen_reduc_plus_scal_v4hi                           (rtx, rtx);
-extern rtx        gen_reduc_plus_scal_v8hi                           (rtx, rtx);
-extern rtx        gen_reduc_plus_scal_v2si                           (rtx, rtx);
-extern rtx        gen_reduc_plus_scal_v4si                           (rtx, rtx);
-extern rtx        gen_reduc_plus_scal_v2di                           (rtx, rtx);
 extern rtx        gen_reduc_plus_scal_v4sf                           (rtx, rtx);
 extern rtx        gen_reduc_smax_nan_scal_v4hf                       (rtx, rtx);
 extern rtx        gen_reduc_smin_nan_scal_v4hf                       (rtx, rtx);
