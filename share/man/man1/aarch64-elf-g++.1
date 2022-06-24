@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "GCC 1"
-.TH GCC 1 "2022-06-17" "gcc-13.0.0" "GNU"
+.TH GCC 1 "2022-06-24" "gcc-13.0.0" "GNU"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -330,6 +330,7 @@ in the following sections.
 \&\fB\-fno\-diagnostics\-show\-option  \-fno\-diagnostics\-show\-caret 
 \&\-fno\-diagnostics\-show\-labels  \-fno\-diagnostics\-show\-line\-numbers 
 \&\-fno\-diagnostics\-show\-cwe  
+\&\-fno\-diagnostics\-show\-rule  
 \&\-fdiagnostics\-minimum\-margin\-width=\fR\fIwidth\fR 
 \&\fB\-fdiagnostics\-parseable\-fixits  \-fdiagnostics\-generate\-patch 
 \&\-fdiagnostics\-show\-template\-tree  \-fno\-elide\-type 
@@ -628,6 +629,7 @@ in the following sections.
 \&\fB\-fprofile\-exclude\-files=\fR\fIregex\fR 
 \&\fB\-fprofile\-reproducible=\fR[\fBmultithreaded\fR|\fBparallel-runs\fR|\fBserial\fR] 
 \&\fB\-fsanitize=\fR\fIstyle\fR  \fB\-fsanitize\-recover  \-fsanitize\-recover=\fR\fIstyle\fR 
+\&\fB\-fsanitize\-trap   \-fsanitize\-trap=\fR\fIstyle\fR  
 \&\fB\-fasan\-shadow\-offset=\fR\fInumber\fR  \fB\-fsanitize\-sections=\fR\fIs1\fR\fB,\fR\fIs2\fR\fB,... 
 \&\-fsanitize\-undefined\-trap\-on\-error  \-fbounds\-check 
 \&\-fcf\-protection=\fR[\fBfull\fR|\fBbranch\fR|\fBreturn\fR|\fBnone\fR|\fBcheck\fR] 
@@ -667,7 +669,7 @@ in the following sections.
 .IP "\fILinker Options\fR" 4
 .IX Item "Linker Options"
 \&\fIobject-file-name\fR  \fB\-fuse\-ld=\fR\fIlinker\fR  \fB\-l\fR\fIlibrary\fR 
-\&\fB\-nostartfiles  \-nodefaultlibs  \-nolibc  \-nostdlib 
+\&\fB\-nostartfiles  \-nodefaultlibs  \-nolibc  \-nostdlib  \-nostdlib++ 
 \&\-e\fR \fIentry\fR  \fB\-\-entry=\fR\fIentry\fR 
 \&\fB\-pie  \-pthread  \-r  \-rdynamic 
 \&\-s  \-static  \-static\-pie  \-static\-libgcc  \-static\-libstdc++ 
@@ -4818,6 +4820,13 @@ Diagnostic messages can optionally have an associated
 \&\f(CW@url\fR{https://cwe.mitre.org/index.html, \s-1CWE\s0} identifier.
 \&\s-1GCC\s0 itself only provides such metadata for some of the \fB\-fanalyzer\fR
 diagnostics.  \s-1GCC\s0 plugins may also provide diagnostics with such metadata.
+By default, if this information is present, it will be printed with
+the diagnostic.  This option suppresses the printing of this metadata.
+.IP "\fB\-fno\-diagnostics\-show\-rules\fR" 4
+.IX Item "-fno-diagnostics-show-rules"
+Diagnostic messages can optionally have rules associated with them, such
+as from a coding standard, or a specification.
+\&\s-1GCC\s0 itself does not do this for any of its diagnostics, but plugins may do so.
 By default, if this information is present, it will be printed with
 the diagnostic.  This option suppresses the printing of this metadata.
 .IP "\fB\-fno\-diagnostics\-show\-line\-numbers\fR" 4
@@ -11983,6 +11992,19 @@ use attributes when possible.
 also at \fB\-O0\fR if \fB\-fsection\-anchors\fR is explicitly requested.
 Additionally \fB\-fno\-toplevel\-reorder\fR implies
 \&\fB\-fno\-section\-anchors\fR.
+.IP "\fB\-funreachable\-traps\fR" 4
+.IX Item "-funreachable-traps"
+With this option, the compiler turns calls to
+\&\f(CW\*(C`_\|_builtin_unreachable\*(C'\fR into traps, instead of using them for
+optimization.  This also affects any such calls implicitly generated
+by the compiler.
+.Sp
+This option has the same effect as \fB\-fsanitize=unreachable
+\&\-fsanitize\-trap=unreachable\fR, but does not affect the values of those
+options.  If \fB\-fsanitize=unreachable\fR is enabled, that option
+takes priority over this one.
+.Sp
+This option is enabled by default at \fB\-O0\fR and \fB\-Og\fR.
 .IP "\fB\-fweb\fR" 4
 .IX Item "-fweb"
 Constructs webs as commonly used for register allocation purposes and assign
@@ -15038,13 +15060,35 @@ equivalent to specifying an \fIopts\fR list of:
 .IX Item "-fsanitize-address-use-after-scope"
 Enable sanitization of local variables to detect use-after-scope bugs.
 The option sets \fB\-fstack\-reuse\fR to \fBnone\fR.
+.IP "\fB\-fsanitize\-trap\fR[\fB=\fR\fIopts\fR]" 4
+.IX Item "-fsanitize-trap[=opts]"
+The \fB\-fsanitize\-trap=\fR option instructs the compiler to
+report for sanitizers mentioned in comma-separated list of \fIopts\fR
+undefined behavior using \f(CW\*(C`_\|_builtin_trap\*(C'\fR rather than a \f(CW\*(C`libubsan\*(C'\fR
+library routine.  If this option is enabled for certain sanitizer,
+it takes precedence over the \fB\-fsanitizer\-recover=\fR for that
+sanitizer, \f(CW\*(C`_\|_builtin_trap\*(C'\fR will be emitted and be fatal regardless
+of whether recovery is enabled or disabled using \fB\-fsanitize\-recover=\fR.
+.Sp
+The advantage of this is that the \f(CW\*(C`libubsan\*(C'\fR library is not needed
+and is not linked in, so this is usable even in freestanding environments.
+.Sp
+Currently this feature works with \fB\-fsanitize=undefined\fR (and its suboptions
+except for \fB\-fsanitize=vptr\fR), \fB\-fsanitize=float\-cast\-overflow\fR,
+\&\fB\-fsanitize=float\-divide\-by\-zero\fR and
+\&\fB\-fsanitize=bounds\-strict\fR.  \f(CW\*(C`\-fsanitize\-trap=all\*(C'\fR can be also
+specified, which enables it for \f(CW\*(C`undefined\*(C'\fR suboptions,
+\&\fB\-fsanitize=float\-cast\-overflow\fR,
+\&\fB\-fsanitize=float\-divide\-by\-zero\fR and
+\&\fB\-fsanitize=bounds\-strict\fR.
+If \f(CW\*(C`\-fsanitize\-trap=undefined\*(C'\fR or \f(CW\*(C`\-fsanitize\-trap=all\*(C'\fR is used
+and \f(CW\*(C`\-fsanitize=vptr\*(C'\fR is enabled on the command line, the
+instrumentation is silently ignored as the instrumentation always needs
+\&\f(CW\*(C`libubsan\*(C'\fR support, \fB\-fsanitize\-trap=vptr\fR is not allowed.
 .IP "\fB\-fsanitize\-undefined\-trap\-on\-error\fR" 4
 .IX Item "-fsanitize-undefined-trap-on-error"
-The \fB\-fsanitize\-undefined\-trap\-on\-error\fR option instructs the compiler to
-report undefined behavior using \f(CW\*(C`_\|_builtin_trap\*(C'\fR rather than
-a \f(CW\*(C`libubsan\*(C'\fR library routine.  The advantage of this is that the
-\&\f(CW\*(C`libubsan\*(C'\fR library is not needed and is not linked in, so this
-is usable even in freestanding environments.
+The \fB\-fsanitize\-undefined\-trap\-on\-error\fR option is deprecated
+equivalent of \fB\-fsanitize\-trap=all\fR.
 .IP "\fB\-fsanitize\-coverage=trace\-pc\fR" 4
 .IX Item "-fsanitize-coverage=trace-pc"
 Enable coverage-guided fuzzing code instrumentation.
@@ -16107,6 +16151,9 @@ This ensures that you have no unresolved references to internal \s-1GCC\s0
 library subroutines.
 (An example of such an internal subroutine is \f(CW\*(C`_\|_main\*(C'\fR, used to ensure \*(C+
 constructors are called.)
+.IP "\fB\-nostdlib++\fR" 4
+.IX Item "-nostdlib++"
+Do not implicitly link with standard \*(C+ libraries.
 .IP "\fB\-e\fR \fIentry\fR" 4
 .IX Item "-e entry"
 .PD 0
@@ -27123,7 +27170,7 @@ Permissible values for this option are: \fBsifive\-e20\fR, \fBsifive\-e21\fR,
 Optimize the output for the given processor, specified by microarchitecture or
 particular \s-1CPU\s0 name.  Permissible values for this option are: \fBrocket\fR,
 \&\fBsifive\-3\-series\fR, \fBsifive\-5\-series\fR, \fBsifive\-7\-series\fR,
-\&\fBsize\fR, and all valid options for \fB\-mcpu=\fR.
+\&\fBthead\-c906\fR, \fBsize\fR, and all valid options for \fB\-mcpu=\fR.
 .Sp
 When \fB\-mtune=\fR is not specified, use the setting from \fB\-mcpu\fR,
 the default is \fBrocket\fR if both are not specified.
