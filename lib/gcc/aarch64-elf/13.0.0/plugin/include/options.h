@@ -17,6 +17,18 @@ struct gcc_options
 {
 #endif
 #ifdef GENERATOR_FILE
+extern aarch64_feature_flags aarch64_asm_isa_flags;
+#else
+  aarch64_feature_flags x_aarch64_asm_isa_flags;
+#define aarch64_asm_isa_flags global_options.x_aarch64_asm_isa_flags
+#endif
+#ifdef GENERATOR_FILE
+extern aarch64_feature_flags aarch64_isa_flags;
+#else
+  aarch64_feature_flags x_aarch64_isa_flags;
+#define aarch64_isa_flags global_options.x_aarch64_isa_flags
+#endif
+#ifdef GENERATOR_FILE
 extern enum aarch64_arch selected_arch;
 #else
   enum aarch64_arch x_selected_arch;
@@ -39,12 +51,6 @@ extern long aarch64_stack_protector_guard_offset;
 #else
   long x_aarch64_stack_protector_guard_offset;
 #define aarch64_stack_protector_guard_offset global_options.x_aarch64_stack_protector_guard_offset
-#endif
-#ifdef GENERATOR_FILE
-extern uint64_t aarch64_isa_flags;
-#else
-  uint64_t x_aarch64_isa_flags;
-#define aarch64_isa_flags global_options.x_aarch64_isa_flags
 #endif
 #ifdef GENERATOR_FILE
 extern unsigned aarch64_enable_bti;
@@ -8680,8 +8686,9 @@ struct GTY(()) cl_optimization
 /* Structure to save/restore selected target specific options.  */
 struct GTY(()) cl_target_option
 {
+  aarch64_feature_flags x_aarch64_asm_isa_flags;
+  aarch64_feature_flags x_aarch64_isa_flags;
   long x_aarch64_stack_protector_guard_offset;
-  uint64_t x_aarch64_isa_flags;
   unsigned x_aarch64_enable_bti;
   const char *x_aarch64_branch_protection_string;
   enum aarch64_code_model x_aarch64_cmodel_var;
@@ -8697,7 +8704,7 @@ struct GTY(()) cl_target_option
   signed char x_flag_omit_leaf_frame_pointer;
   signed char x_aarch64_flag_outline_atomics;
   signed char x_pcrelative_literal_loads;
-  /* 16 members */
+  /* 17 members */
   unsigned HOST_WIDE_INT explicit_mask[1];
   /* - */ int explicit_mask_target_flags;
 };
