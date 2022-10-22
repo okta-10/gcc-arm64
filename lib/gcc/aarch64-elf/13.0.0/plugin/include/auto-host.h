@@ -1452,6 +1452,12 @@
 #endif
 
 
+/* Define to 1 if you have the `getauxval' function. */
+#ifndef USED_FOR_TARGET
+#define HAVE_GETAUXVAL 1
+#endif
+
+
 /* Define to 1 if you have the `getchar_unlocked' function. */
 #ifndef USED_FOR_TARGET
 #define HAVE_GETCHAR_UNLOCKED 1
@@ -1937,6 +1943,12 @@
 /* Define to 1 if you have the `sysconf' function. */
 #ifndef USED_FOR_TARGET
 #define HAVE_SYSCONF 1
+#endif
+
+
+/* Define to 1 if you have the <sys/auxv.h> header file. */
+#ifndef USED_FOR_TARGET
+#define HAVE_SYS_AUXV_H 1
 #endif
 
 
